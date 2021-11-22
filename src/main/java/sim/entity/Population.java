@@ -11,7 +11,7 @@ public class Population {
     private final Area area;
 
     public Population(Area area) {
-        this.population = new ArrayList<Person>();
+        this.population = new ArrayList<>();
         this.area=area;
     }
 
