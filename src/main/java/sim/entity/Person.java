@@ -4,9 +4,7 @@ import sim.location.IVector;
 import sim.location.Vector2D;
 import sim.states.IState;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class Person {
     private IState state;
     private double x;
