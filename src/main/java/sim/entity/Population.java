@@ -2,7 +2,6 @@ package sim.entity;
 
 import sim.states.*;
 
-import javax.swing.text.Document;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +51,10 @@ public class Population {
         this.population.remove(person);
     }
 
+    public void clearPopulation(){
+        population.clear();
+    }
+
     public void handleReturn(Person person){
         double x = person.getX();
         double y = person.getY();
@@ -89,7 +92,9 @@ public class Population {
                 for(Person sickPerson : sickPeople){
                     if(person.getDistance(sickPerson) <= 2.0) {
                         access = true;
-                        if(sickPerson.getState() instanceof Symptoms) ((Healthy) person.getState()).setSymptomsPerson(true);
+                        if(sickPerson.getState() instanceof Symptoms) {
+                            ((Healthy) person.getState()).setSymptomsPerson(true);
+                        }
                         person.getState().handle(person);
                         break;
                     }

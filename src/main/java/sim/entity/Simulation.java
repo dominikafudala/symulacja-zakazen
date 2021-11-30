@@ -1,6 +1,7 @@
 package sim.entity;
 
 import sim.memento.Caretaker;
+import sim.memento.Memento;
 import sim.memento.XML;
 import sim.states.Healthy;
 import sim.states.IState;
@@ -10,7 +11,7 @@ public class Simulation {
     private int n;
     private int m;
     private int startPopulationNum;
-    private final DrawWindow window;
+    private static DrawWindow window;
     private final Area area;
     private static Population population;
     private final static Caretaker caretaker = new Caretaker();
@@ -20,16 +21,16 @@ public class Simulation {
         this.n = n;
         this.m = m;
         this.startPopulationNum = startPopulationNum;
-        this.window = new DrawWindow(n , m);
+        window = new DrawWindow(n , m);
         this.area = new Area(m, n);
     }
 
     public Simulation(int n, int m, String path){
         this.n = n;
         this.m = m;
-        this.window = new DrawWindow(n , m);
+        window = new DrawWindow(n , m);
         this.area = new Area(m, n);
-        this.population = new Population(area);
+        population = new Population(area);
         new XML().fromXML(path);
 
     }
@@ -46,7 +47,7 @@ public class Simulation {
                 double x = Math.random() * (m * .01);
                 double y = Math.random() * (n * .01);
                 IState state = new Healthy();
-                if (flagImmunity == true) {
+                if (flagImmunity) {
                     if (Math.random() > .5) state = new Immune();
                 }
                 population.addPerson(new Person(state, x, y));
@@ -77,4 +78,21 @@ public class Simulation {
         caretaker.addMemento(population);
         xml.saveXML(caretaker.getMemento(caretaker.getMementos().size() - 1));
     }
+
+    public static void undoSimulation(){
+        Memento memento = caretaker.getMemento(caretaker.getMementos().size() - 1);
+        population.clearPopulation();
+        for(Person person: memento.getPopulationList()){
+            population.addPerson(person);
+        }
+        caretaker.removeMemento(memento);
+        window.displayPopulation(population);
+    }
+
+    public static boolean shouldBeEnabled(){
+        return caretaker.getMementos().size() != 0;
+    }
+
+
+
 }
