@@ -21,4 +21,7 @@ public class Caretaker {
     public Memento getMemento(int index){
         return mementos.get(index);
     }
+    public void removeMemento(Memento memento) {
+        mementos.remove(memento);
+    }
 }

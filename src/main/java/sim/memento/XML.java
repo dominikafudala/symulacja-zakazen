@@ -16,7 +16,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class XML {
     private int xml_counter = 0;
@@ -33,7 +32,7 @@ public class XML {
             Element population = doc.createElement("population");
             doc.appendChild(population);
 
-            for(Person person : memento.getPopulation()) {
+            for(Person person : memento.getPopulationList()) {
 
                 Element personElement = doc.createElement("person");
                 population.appendChild(personElement);
@@ -65,11 +64,10 @@ public class XML {
             DOMSource source = new DOMSource(doc);
             transformer.transform(source, result);
         }
-        catch (ParserConfigurationException pce) {
+        catch (ParserConfigurationException | TransformerException pce) {
             pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();}
-    xml_counter++;
+        }
+        xml_counter++;
     }
 
     public void fromXML(String path){

@@ -16,12 +16,13 @@ public class DrawWindow implements ActionListener {
     private final int height;
     private final int width;
     private final BufferedImage CLEAR;
+    private JButton buttonSave, buttonUndo;
 
     public DrawWindow(int height, int width) {
         this.height = height;
         this.width = width;
-        this.frame = null;
-        this.label = null;
+        frame = null;
+        label = null;
         this.image = new BufferedImage(width , height, BufferedImage.TYPE_INT_ARGB);
         this.CLEAR = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
@@ -44,28 +45,40 @@ public class DrawWindow implements ActionListener {
     }
 
     private void display(BufferedImage image) {
-        if (this.frame == null) {
-            this.frame = new JFrame();
-            this.frame.setTitle("Simulation");
-            this.frame.setSize(image.getWidth(), image.getHeight());
-            this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            this.label = new JLabel();
-            this.label.setIcon(new ImageIcon(image));
-            this.frame.getContentPane().add(label, BorderLayout.WEST);
-            JButton button = new JButton("Save");
-            button.addActionListener(this);
-            this.label.setBounds(width, height, 200, 100);
-            this.frame.getContentPane().add(button, BorderLayout.SOUTH);
-            this.frame.setLocationRelativeTo(null);
-            this.frame.pack();
-            this.frame.setVisible(true);
+        if (frame == null) {
+            frame = new JFrame();
+            frame.setTitle("Simulation");
+            frame.setSize(image.getWidth(), image.getHeight());
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            label = new JLabel();
+            label.setIcon(new ImageIcon(image));
+            frame.getContentPane().add(label, BorderLayout.WEST);
+            buttonSave = new JButton("Save");
+            buttonUndo = new JButton("Undo");
+            buttonSave.addActionListener(this);
+            buttonUndo.addActionListener(this);
+            JPanel buttons = new JPanel();
+            buttons.add(buttonSave);
+            buttons.add(buttonUndo);
+            buttonUndo.setEnabled(false);
+            label.setBounds(width, height, 200, 100);
+            frame.getContentPane().add(buttons, BorderLayout.SOUTH);
+            frame.setLocationRelativeTo(null);
+            frame.pack();
+            frame.setVisible(true);
         } else {
-            this.label.setIcon(new ImageIcon(image));
+            label.setIcon(new ImageIcon(image));
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Simulation.saveSimulation();
+        if(e.getSource() == buttonSave){
+            Simulation.saveSimulation();
+        } else if(e.getSource() == buttonUndo){
+            Simulation.undoSimulation();
+        }
+
+        buttonUndo.setEnabled(Simulation.shouldBeEnabled());
     }
 }

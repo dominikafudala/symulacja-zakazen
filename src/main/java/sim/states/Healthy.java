@@ -18,6 +18,7 @@ public class Healthy implements INotImmune{
             }
         }
         this.counter++;
+        this.setSymptomsPerson(false);
     }
 
     private void randomizeState(Person person){
@@ -27,6 +28,10 @@ public class Healthy implements INotImmune{
 
     public void setSymptomsPerson(boolean symptomsPerson) {
         this.symptomsPerson = symptomsPerson;
+    }
+
+    public boolean isSymptomsPerson() {
+        return symptomsPerson;
     }
 
     public void setCounter(int counter) {

@@ -25,9 +25,9 @@ public class Main {
                 String sim = s.nextLine();
                 switch (sim) {
                     case "1":
-                        new Simulation(700, 1400, 200).startSimulation(false);
+                        new Simulation(700, 1400, 100).startSimulation(false);
                     case "2":
-                        new Simulation(700, 1400, 200).startSimulation(true);
+                        new Simulation(700, 1400, 100).startSimulation(true);
                     default:
                         System.out.println("Wybrana opcja nie istnieje");
                 }
